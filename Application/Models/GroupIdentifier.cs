@@ -8,9 +8,9 @@ namespace Application.Models
     public class GroupIdentifier
     {
         public string ChatTitle { get; set; }
-        public int ChatId { get; set; }
+        public Guid ChatId { get; set; }
 
-        public GroupIdentifier(string title, int id)
+        public GroupIdentifier(string title, Guid id)
         {
             ChatTitle = title;
             ChatId = id;

@@ -12,7 +12,7 @@ namespace Application.Services.Interfaces;
 public interface IChatsService
 {
     Task<ChatResponseDTO> CreateChatAsync(ChatCreateDTO dto);
-    Task<ChatResponseDTO> GetChatAsync(int chatId);
-    Task<ChatResponseDTO> UpdateChatAsync(int chatId, ChatUpdateDTO dto);
-    Task<ChatResponseDTO> DeleteChatAsync(int chatId);
+    Task<ChatResponseDTO> GetChatAsync(Guid chatId);
+    Task<ChatResponseDTO> UpdateChatAsync(Guid chatId, ChatUpdateDTO dto);
+    Task<ChatResponseDTO> DeleteChatAsync(Guid chatId);
 }

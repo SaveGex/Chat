@@ -4,9 +4,9 @@ namespace Domain.Models;
 
 public class Message : IIdentifiable
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
-    public int ChatId { get; set; }
+    public Guid ChatId { get; set; }
 
     public string Author { get; set; } = null!;
 

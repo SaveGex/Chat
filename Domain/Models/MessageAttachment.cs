@@ -5,11 +5,11 @@
         /// <summary>
         /// Primary key
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         /// <summary>
         /// FK key to the message
         /// </summary>
-        public int MessageId { get; set; }
+        public Guid MessageId { get; set; }
         /// <summary>
         /// Configuration property
         /// </summary>

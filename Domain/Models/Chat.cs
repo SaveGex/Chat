@@ -5,7 +5,7 @@ namespace Domain.Models;
 
 public class Chat : IIdentifiable
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     public string Title { get; set; } = null!;
 

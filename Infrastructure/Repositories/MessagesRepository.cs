@@ -25,7 +25,7 @@ namespace Infrastructure.Repositories
             return result;
         }
 
-        public async Task<Message> DeleteMessageAsync(int messageId)
+        public async Task<Message> DeleteMessageAsync(Guid messageId)
         {
             var message = await Context.Messages.SingleAsync(m => m.Id == messageId);
             var result = Context.Messages.Remove(message).Entity;
@@ -33,7 +33,7 @@ namespace Infrastructure.Repositories
             return result;
         }
 
-        public async Task<Message?> GetMessageByIdAsync(int messageId)
+        public async Task<Message?> GetMessageByIdAsync(Guid messageId)
         {
             var message = await Context.Messages.SingleAsync(m => m.Id == messageId);
             return message;
@@ -75,7 +75,7 @@ namespace Infrastructure.Repositories
             return afterResult;
         }
 
-        public Task<Message> UpdateMessageAsync(int messageId, Message message)
+        public Task<Message> UpdateMessageAsync(Guid messageId, Message message)
         {
             throw new NotImplementedException();
         }

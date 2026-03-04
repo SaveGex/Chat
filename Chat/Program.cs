@@ -1,4 +1,6 @@
 using Application.DI;
+using Application.Services;
+using Application.Services.Interfaces;
 using Azure.Identity;
 using ChatApi.Hubs;
 using ChatApi.Hubs.Interfaces;
@@ -7,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Azure.SignalR;
-using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Scalar.AspNetCore;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,14 +19,16 @@ var keyVaultEndpoint = new Uri(
     Environment.GetEnvironmentVariable("SchoolChatSecretsUri")
     ?? builder.Configuration["SchoolChatSecretsUri"]
     ?? throw new InvalidConfigurationException("Environment\\configuration variable is missing: SchoolChatSecretsUri"));
-builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
+
+DotNetEnv.Env.Load(
+    Path.Combine(builder.Environment.ContentRootPath, "..", ".env"));
+builder.Configuration
+    .AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential())
+    .AddEnvironmentVariables();
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"))
-    .EnableTokenAcquisitionToCallDownstreamApi()
-    .AddInMemoryTokenCaches();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -57,7 +60,6 @@ builder.Services.AddControllers(conf =>
     conf.Filters.Add(new AuthorizeFilter(policy));
 });
 builder.Services.AddOpenApi();
-
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddPagination();
@@ -68,6 +70,7 @@ var azureSignalRConnectionString = builder.Configuration["SignalR-SchoolChat-Pri
 //azure key vault
 
 builder.Services.AddSignalR().AddAzureSignalR(azureSignalRConnectionString);
+builder.Services.AddHttpClient();
 
 //Presentation Layer Dependencies
 builder.Services.AddSingleton<IChatsHub, ChatsHub>();

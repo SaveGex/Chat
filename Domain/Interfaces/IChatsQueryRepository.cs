@@ -8,7 +8,7 @@ namespace Domain.Interfaces
     {
         Task<KeysetPaginationAfterResult<Chat>> GetChatKeysetPaginationAsync(string? after, string propName, int limit, bool IsDescending);
 
-        Task<IEnumerable<Chat>> ChatsContainsTheUser(int userId);
+        Task<IEnumerable<Chat>> ChatsContainsTheUser(Guid userId);
 
     }
 }

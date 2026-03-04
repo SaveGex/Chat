@@ -24,11 +24,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Chat", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -46,19 +45,19 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
+                        .HasDefaultValueSql("newsequentialid()");
 
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("ChatId1")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ChatId1")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("PK_ChatUserPermissions_Id");
@@ -76,23 +75,22 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Message", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Author")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("ChatId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Chat_Id");
 
-                    b.Property<int?>("ChatId1")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ChatId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -119,11 +117,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.MessageAttachment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
@@ -142,8 +139,8 @@ namespace Infrastructure.Migrations
                     b.Property<long>("FileSize")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("MessageId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("PK_MessageAttachments_Id");
@@ -155,11 +152,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Permission", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Description")
                         .HasMaxLength(512)
@@ -170,8 +166,8 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("PK_Permissions_Id");
@@ -183,37 +179,37 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             Description = "Allows you to view messages in the chat",
                             Name = "ReadMessages"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                             Description = "Allows sending new messages",
                             Name = "SendMessages"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                             Description = "Allows you to attach files to messages",
                             Name = "SendAttachments"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
                             Description = "Allows you to delete your own messages",
                             Name = "DeleteOwnMessages"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"),
                             Description = "Chat administrator: adding/removing participants",
                             Name = "ManageUsers"
                         },
                         new
                         {
-                            Id = 6,
+                            Id = new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"),
                             Description = "Allows you to change the name and icon of the chat",
                             Name = "EditChatInfo"
                         });
@@ -221,11 +217,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Role", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
                     b.Property<string>("Description")
                         .HasMaxLength(512)
@@ -236,8 +231,8 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id")
                         .HasName("PK_Roles_Id");
@@ -249,25 +244,25 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             Description = "Have permissions for everything",
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             Description = "Can read, write(restricted), delete and change(only materials that owns to him or himself class)",
                             Name = "Teacher"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             Description = "Can read(publicly available or himself class material), write(restricted), delete and change(only material that it owns)",
                             Name = "Student"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             Description = "Can read(publicly available or materials attached to him)",
                             Name = "Guest"
                         });
@@ -275,18 +270,18 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newsequentialid()");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid?>("ChatId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AzureAdObjectId")
+                    b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("ChatId")
-                        .HasColumnType("int");
+                        .HasMaxLength(254)
+                        .HasColumnType("nvarchar(254)");
 
                     b.Property<string>("IconUrl")
                         .HasColumnType("nvarchar(max)");
@@ -297,6 +292,11 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasDefaultValueSql("(newId())");
 
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -304,8 +304,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Users_Id");
-
-                    b.HasIndex("AzureAdObjectId");
 
                     b.HasIndex("ChatId");
 

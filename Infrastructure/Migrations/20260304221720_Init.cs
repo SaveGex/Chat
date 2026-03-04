@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,38 +8,78 @@
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ImplementedtheseMessageattachementsandRolesPermissionsconnectionandPermissionmodel : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Text",
-                table: "messages",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+            migrationBuilder.CreateTable(
+                name: "chats",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
+                    Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__chats__3214EC07BC974D61", x => x.Id);
+                });
 
-            migrationBuilder.AddColumn<int>(
-                name: "ChatId1",
-                table: "messages",
-                type: "int",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "messages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
+                    Chat_Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created_At = table.Column<DateTime>(type: "smalldatetime", nullable: false, defaultValueSql: "(getdate())"),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ChatId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__messages__3214EC07CF1AB666", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Char_Id_Id",
+                        column: x => x.Chat_Id,
+                        principalTable: "chats",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_messages_chats_ChatId1",
+                        column: x => x.ChatId1,
+                        principalTable: "chats",
+                        principalColumn: "Id");
+                });
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DeletedAt",
-                table: "messages",
-                type: "datetime2",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
+                    Identifier = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "(newId())"),
+                    Username = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    IconUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ChatId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users_Id", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "chats",
+                        principalColumn: "Id");
+                });
 
             migrationBuilder.CreateTable(
                 name: "MessageAttachments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MessageId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
+                    MessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FileName = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     ContentType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FileSize = table.Column<long>(type: "bigint", nullable: false),
@@ -56,36 +97,13 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AzureAdObjectId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Identifier = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "(newId())"),
-                    Username = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    IconUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChatId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users_Id", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_chats_ChatId",
-                        column: x => x.ChatId,
-                        principalTable: "chats",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,11 +119,10 @@ namespace Infrastructure.Migrations
                 name: "Permissions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: true)
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,11 +138,11 @@ namespace Infrastructure.Migrations
                 name: "ChatUserPermissions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    PermissionId = table.Column<int>(type: "int", nullable: false),
-                    ChatId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ChatId1 = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
+                    PermissionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChatId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -160,12 +177,12 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "Description", "Name", "RoleId" },
                 values: new object[,]
                 {
-                    { 1, "Allows you to view messages in the chat", "ReadMessages", null },
-                    { 2, "Allows sending new messages", "SendMessages", null },
-                    { 3, "Allows you to attach files to messages", "SendAttachments", null },
-                    { 4, "Allows you to delete your own messages", "DeleteOwnMessages", null },
-                    { 5, "Chat administrator: adding/removing participants", "ManageUsers", null },
-                    { 6, "Allows you to change the name and icon of the chat", "EditChatInfo", null }
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "Allows you to view messages in the chat", "ReadMessages", null },
+                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), "Allows sending new messages", "SendMessages", null },
+                    { new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), "Allows you to attach files to messages", "SendAttachments", null },
+                    { new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Allows you to delete your own messages", "DeleteOwnMessages", null },
+                    { new Guid("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee"), "Chat administrator: adding/removing participants", "ManageUsers", null },
+                    { new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"), "Allows you to change the name and icon of the chat", "EditChatInfo", null }
                 });
 
             migrationBuilder.InsertData(
@@ -173,16 +190,11 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "Description", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Have permissions for everything", "Admin", null },
-                    { 2, "Can read, write(restricted), delete and change(only materials that owns to him or himself class)", "Teacher", null },
-                    { 3, "Can read(publicly available or himself class material), write(restricted), delete and change(only material that it owns)", "Student", null },
-                    { 4, "Can read(publicly available or materials attached to him)", "Guest", null }
+                    { new Guid("11111111-1111-1111-1111-111111111111"), "Have permissions for everything", "Admin", null },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), "Can read, write(restricted), delete and change(only materials that owns to him or himself class)", "Teacher", null },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), "Can read(publicly available or himself class material), write(restricted), delete and change(only material that it owns)", "Student", null },
+                    { new Guid("44444444-4444-4444-4444-444444444444"), "Can read(publicly available or materials attached to him)", "Guest", null }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_messages_ChatId1",
-                table: "messages",
-                column: "ChatId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatUserPermissions_ChatId",
@@ -210,6 +222,16 @@ namespace Infrastructure.Migrations
                 column: "MessageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_messages_Chat_Id",
+                table: "messages",
+                column: "Chat_Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_messages_ChatId1",
+                table: "messages",
+                column: "ChatId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Permissions_RoleId",
                 table: "Permissions",
                 column: "RoleId");
@@ -218,11 +240,6 @@ namespace Infrastructure.Migrations
                 name: "IX_Roles_UserId",
                 table: "Roles",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_AzureAdObjectId",
-                table: "Users",
-                column: "AzureAdObjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_ChatId",
@@ -234,22 +251,11 @@ namespace Infrastructure.Migrations
                 table: "Users",
                 column: "Identifier",
                 unique: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_messages_chats_ChatId1",
-                table: "messages",
-                column: "ChatId1",
-                principalTable: "chats",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_messages_chats_ChatId1",
-                table: "messages");
-
             migrationBuilder.DropTable(
                 name: "ChatUserPermissions");
 
@@ -260,32 +266,16 @@ namespace Infrastructure.Migrations
                 name: "Permissions");
 
             migrationBuilder.DropTable(
+                name: "messages");
+
+            migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
-            migrationBuilder.DropIndex(
-                name: "IX_messages_ChatId1",
-                table: "messages");
-
-            migrationBuilder.DropColumn(
-                name: "ChatId1",
-                table: "messages");
-
-            migrationBuilder.DropColumn(
-                name: "DeletedAt",
-                table: "messages");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Text",
-                table: "messages",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+            migrationBuilder.DropTable(
+                name: "chats");
         }
     }
 }

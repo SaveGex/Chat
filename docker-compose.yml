@@ -11,9 +11,15 @@ services:
       ASPNETCORE_HTTPS_PORT: ${ASPNETCORE_HTTPS_PORT}
       SchoolChatSecretsUri: ${SchoolChatSecretsUri}
 
-      AZURE_TENANT_ID: ${AZURE_TENANT_ID}
-      AZURE_CLIENT_ID: ${AZURE_CLIENT_ID}
-      AZURE_CLIENT_SECRET: ${AZURE_CLIENT_SECRET}
+      AzureAd__AZURE_TENANT_ID: ${AZURE_TENANT_ID}
+      AzureAd__AZURE_CLIENT_ID: ${AZURE_CLIENT_ID}
+      AzureAd__AZURE_CLIENT_SECRET: ${AZURE_CLIENT_SECRET}
+
+      Jwt__SecretKey: ${Jwt__SecretKey}
+      Jwt__Issuer: ${Jwt__Issuer}
+      Jwt__Audience: ${Jwt__Audience}
+      Jwt__AccessTokenExpirationInSeconds: ${Jwt__AccessTokenExpirationInSeconds} # 15 minutes
+      Jwt__RefreshTokenExpirationInSeconds: ${Jwt__RefreshTokenExpirationInSeconds}# 12 days
     ports:
       - 8080:${ASPNETCORE_HTTP_PORT}
       - 8081:${ASPNETCORE_HTTPS_PORT}

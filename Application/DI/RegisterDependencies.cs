@@ -14,6 +14,7 @@ namespace Application.DI
             services.AddScoped<IChatsService, ChatsService>();
             services.AddScoped<IClientsService, ClientsService>();
             services.AddScoped<IMessagesService, MessagesService>();
+            services.AddScoped<IUsersService, UsersService>();
 
             services.AddSingleton<IChatsAccessOrchestrator, ChatsAccessOrchestrator>();
         }

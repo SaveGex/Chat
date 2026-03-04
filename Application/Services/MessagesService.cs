@@ -23,7 +23,7 @@ namespace Application.Services
             return result.Adapt<MessageResponseDTO>();
         }
 
-        public async Task<MessageResponseDTO> DeleteMessageAsync(int messageId)
+        public async Task<MessageResponseDTO> DeleteMessageAsync(Guid messageId)
         {
             return (await MessagesRepository.DeleteMessageAsync(messageId))
                 .Adapt<MessageResponseDTO>();
@@ -40,7 +40,7 @@ namespace Application.Services
             return result.Adapt<KeysetPaginationAfterResult<MessageResponseDTO>>();
         }
 
-        public async Task<MessageResponseDTO> UpdateMessageAsync(int messageId, MessageUpdateDTO dto)
+        public async Task<MessageResponseDTO> UpdateMessageAsync(Guid messageId, MessageUpdateDTO dto)
         {
             var message = dto.Adapt<Message>();
             var result = await MessagesRepository.UpdateMessageAsync(messageId, message);

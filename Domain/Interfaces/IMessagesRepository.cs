@@ -7,10 +7,10 @@ namespace Domain.Interfaces
     {
 
         Task<Message> CreateMessageAsync(Message message);
-        Task<Message?> GetMessageByIdAsync(int messageId);
+        Task<Message?> GetMessageByIdAsync(Guid messageId);
         Task<KeysetPaginationAfterResult<Message>> GetMessagesKeysetPaginationAsync(string? after, string propName, int limit, bool IsDescending);
-        Task<Message> UpdateMessageAsync(int messageId, Message message);
-        Task<Message> DeleteMessageAsync(int messageId);
+        Task<Message> UpdateMessageAsync(Guid messageId, Message message);
+        Task<Message> DeleteMessageAsync(Guid messageId);
 
     }
 }

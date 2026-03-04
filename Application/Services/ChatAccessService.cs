@@ -29,13 +29,13 @@ public class ChatAccessService : IChatsAccessService
         return ksr.Adapt<KeysetPaginationAfterResult<ChatResponseDTO>>();
     }
 
-    public async Task<IEnumerable<ChatResponseDTO>> ChatsContainsTheUserAsync(int userId)
+    public async Task<IEnumerable<ChatResponseDTO>> ChatsContainsTheUserAsync(Guid userId)
     {
         var chats = await QueryRepository.ChatsContainsTheUser(userId);
         return chats.Adapt<List<ChatResponseDTO>>();
     }
 
-    public async Task<GroupIdentifier> GetGroupIdentifierByGroupIdAsync(int chatId)
+    public async Task<GroupIdentifier> GetGroupIdentifierByGroupIdAsync(Guid chatId)
     {
         var chat = await CRUDRepository.GetChatByIdAsync(chatId);
         return new GroupIdentifier(chat.Title, chat.Id);

@@ -2,7 +2,7 @@
 {
     public class MessageCreateDTO
     {
-        public int ChatId { get; set; }
+        public Guid ChatId { get; set; }
 
         public string Author { get; set; } = null!;
 

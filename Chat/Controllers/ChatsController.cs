@@ -53,7 +53,7 @@ namespace ChatApi.Controllers
 
         [HttpGet("chatId:int")]
         [ProducesResponseType(typeof(ChatResponseDTO), StatusCodes.Status200OK)]
-        public async Task<ActionResult<ChatResponseDTO>> GetChat(int chatId)
+        public async Task<ActionResult<ChatResponseDTO>> GetChat(Guid chatId)
         {
             ChatResponseDTO result;
             try
@@ -69,7 +69,7 @@ namespace ChatApi.Controllers
 
         [HttpDelete("{chatId:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IResult> DeleteChat(int chatId)
+        public async Task<IResult> DeleteChat(Guid chatId)
         {
             try
             {

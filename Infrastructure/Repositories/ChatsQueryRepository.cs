@@ -17,7 +17,7 @@ namespace Infrastructure.Repositories
             Context = schoolChatContext;
             PaginationService = paginationService;
         }
-        public async Task<IEnumerable<Chat>> ChatsContainsTheUser(int userId)
+        public async Task<IEnumerable<Chat>> ChatsContainsTheUser(Guid userId)
         {
             List<Chat> result = await Context.Chats
                 .Where(c => c.Users.Any(u => u.Id == userId))

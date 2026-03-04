@@ -22,7 +22,7 @@ namespace Infrastructure.Repositories
             return result;
         }
 
-        public async Task<Chat> DeleteChatAsync(int chatId)
+        public async Task<Chat> DeleteChatAsync(Guid chatId)
         {
             var chat = await ChatContext.Chats.SingleAsync(c => c.Id == chatId);
             var result = ChatContext.Chats.Remove(chat).Entity;
@@ -30,13 +30,13 @@ namespace Infrastructure.Repositories
             return result;
         }
 
-        public async Task<Chat> GetChatByIdAsync(int chatId)
+        public async Task<Chat> GetChatByIdAsync(Guid chatId)
         {
             var chat = await ChatContext.Chats.SingleAsync(c => c.Id == chatId);
             return chat;
         }
 
-        public async Task<Chat> UpdateChatAsync(int chatId, Chat dto)
+        public async Task<Chat> UpdateChatAsync(Guid chatId, Chat dto)
         {
             var chat = await ChatContext.Chats.SingleAsync(c => c.Id == chatId);
             ChatContext.Entry(chat).CurrentValues.SetValues(dto);

@@ -60,7 +60,7 @@ namespace ChatApi.Controllers
 
         [HttpDelete("{messageId:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IResult> DeleteMessage(int messageId)
+        public async Task<IResult> DeleteMessage(Guid messageId)
         {
             MessageResponseDTO result;
             try
@@ -78,7 +78,7 @@ namespace ChatApi.Controllers
         [HttpPut("{messageId:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IResult> UpdateMessage(
-            int messageId,
+            Guid messageId,
             [FromBody] MessageUpdateDTO dto)
         {
             MessageResponseDTO result;

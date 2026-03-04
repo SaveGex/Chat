@@ -23,9 +23,9 @@ namespace Application.Services.Interfaces
         /// <param name="messageId">Message id to update</param>
         /// <param name="dto">new values of existing message</param>
         /// <returns></returns>
-        Task<MessageResponseDTO> UpdateMessageAsync(int messageId, MessageUpdateDTO dto);
+        Task<MessageResponseDTO> UpdateMessageAsync(Guid messageId, MessageUpdateDTO dto);
 
-        Task<MessageResponseDTO> DeleteMessageAsync(int messageId);
+        Task<MessageResponseDTO> DeleteMessageAsync(Guid messageId);
 
     }
 }

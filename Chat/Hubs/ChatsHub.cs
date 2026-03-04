@@ -25,10 +25,11 @@ public class ChatsHub : Hub, IChatsHub
             new Exception("Context is null");
         }
 
-        if (int.TryParse(Context?.User?.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value, out int userId) == false)
+        if(Guid.TryParse(Context?.User?.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value, out Guid userId) == false)
         {
-            new Exception("User id is null or incorrect");
+            throw new Exception("User id is null or incorrect");
         }
+        
 
         HashSet<GroupIdentifier> groupsContainsTheUserIdentifiers =
             [.. (await ChatsAccessOrchestrator.ExecuteAsync(
@@ -45,7 +46,7 @@ public class ChatsHub : Hub, IChatsHub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        if (int.TryParse(Context?.User?.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value, out int userId) == false)
+        if (Guid.TryParse(Context?.User?.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value, out Guid userId) == false)
         {
             new Exception("User id is null or incorrect");
         }

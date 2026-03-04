@@ -23,19 +23,19 @@ namespace Application.Services
         }
 
 
-        public async Task<ChatResponseDTO> GetChatAsync(int chatId)
+        public async Task<ChatResponseDTO> GetChatAsync(Guid chatId)
         {
             var chat = await CRUDRepository.GetChatByIdAsync(chatId);
             return chat.Adapt<ChatResponseDTO>();
         }
-        public async Task<ChatResponseDTO> UpdateChatAsync(int chatId, ChatUpdateDTO dto)
+        public async Task<ChatResponseDTO> UpdateChatAsync(Guid chatId, ChatUpdateDTO dto)
         {
             var chat = dto.Adapt<Chat>();
             var result = await CRUDRepository.UpdateChatAsync(chatId, chat);
             return result.Adapt<ChatResponseDTO>();
         }
 
-        public async Task<ChatResponseDTO> DeleteChatAsync(int chatId)
+        public async Task<ChatResponseDTO> DeleteChatAsync(Guid chatId)
         {
             var chat = await CRUDRepository.DeleteChatAsync(chatId);
             return chat.Adapt<ChatResponseDTO>();

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace Infrastructure.Services
         public JwtOptions JwtOptions { get; set; }
 
         public int AccessTokenExpirationInSeconds => this.JwtOptions.AccessTokenExpirationInSeconds;
+        public int RefreshTokenExpirationInSeconds => this.JwtOptions.RefreshTokenExpirationInSeconds;
 
         public TokenService(JwtOptions jwtOptions) 
         { 
@@ -53,12 +55,8 @@ namespace Infrastructure.Services
 
         public Task<string> GenerateRefreshTokenAsync()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ValidateRefreshTokenAsync(string refreshToken)
-        {
-            throw new NotImplementedException();
+            var bytes = RandomNumberGenerator.GetBytes(64);
+            return Task.FromResult(Convert.ToBase64String(bytes));
         }
     }
 }

@@ -1,23 +1,37 @@
 ﻿
+using Application.Options;
 using Domain.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Infrastructure.Services
 {
     public class TokenCacheService : ITokenCacheService
     {
-        public Task<string?> GetRefreshTokenAsync(string userId)
+        private IMemoryCache MemoryCache { get; }
+        private JwtOptions JwtOptions { get; }
+
+        public TokenCacheService(IMemoryCache memoryCache, JwtOptions jwtOptions)
         {
-            throw new NotImplementedException();
+            MemoryCache = memoryCache;
+            JwtOptions = jwtOptions;
         }
 
-        public Task RevokeRefreshTokenAsync(string userId)
+        public async Task<Guid?> GetUserIdByRefreshTokenAsync(string refreshToken)
         {
-            throw new NotImplementedException();
+            _ = MemoryCache.TryGetValue(refreshToken, out Guid userId);
+            return userId;
+        }
+
+        public Task RevokeRefreshTokenAsync(Guid userId)
+        {
+            MemoryCache.Remove(userId);
+            return Task.CompletedTask;
         }
 
         public Task SaveRefreshTokenAsync(Guid userId, string refreshToken)
         {
-            throw new NotImplementedException();
+            MemoryCache.Set(refreshToken, userId, TimeSpan.FromSeconds(JwtOptions.RefreshTokenExpirationInSeconds));
+            return Task.CompletedTask;
         }
     }
 }

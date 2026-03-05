@@ -2,6 +2,7 @@
 using Application.Orchestrations.Interfaces;
 using Application.Services;
 using Application.Services.Interfaces;
+using Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.DI
@@ -14,9 +15,10 @@ namespace Application.DI
             services.AddScoped<IChatsService, ChatsService>();
             services.AddScoped<IClientsService, ClientsService>();
             services.AddScoped<IMessagesService, MessagesService>();
-            services.AddScoped<IUsersService, UsersService>();
 
-            services.AddSingleton<IChatsAccessOrchestrator, ChatsAccessOrchestrator>();
+            services.AddSingleton<IGenericOrchestrator<IUsersRepository>, GenericOrchestrator<IUsersRepository>>();
+            services.AddSingleton<IGenericOrchestrator<IChatsAccessService>, GenericOrchestrator<IChatsAccessService>>();
+            services.AddSingleton<IUsersService, UsersService>();
         }
     }
 }

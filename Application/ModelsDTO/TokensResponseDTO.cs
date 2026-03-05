@@ -10,12 +10,9 @@ namespace Application.ModelsDTO
     public class TokensResponseDTO
     {
         [JsonPropertyName("access_token")]
-        public string AccessToken { get; set; } = null!;
+        public TokenDTO? AccessToken { get; set; }
 
         [JsonPropertyName("refresh_token")]
-        public string RefreshToken { get; set; } = null!;
-
-        [JsonPropertyName("expires_in")]
-        public int ExpiresIn { get; set; }
+        public TokenDTO? RefreshToken { get; set; }
     }
 }

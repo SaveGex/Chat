@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Application.ModelsDTO
 {
-    public class TokenRefreshDTO
+    public class TokenDTO
     {
-        public string RefreshToken { get; set; } = null!;
+        public string Token { get; set; } = null!;
+        public int TokenExpiresInSeconds { get; set; }
+
     }
 }

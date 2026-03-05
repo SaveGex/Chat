@@ -1,4 +1,5 @@
 using Application.DI;
+using Application.Options;
 using Application.Services;
 using Application.Services.Interfaces;
 using Azure.Identity;
@@ -10,8 +11,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Azure.SignalR;
 using Microsoft.IdentityModel.Protocols.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +31,25 @@ builder.Configuration
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+#pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
+        var jwtOptions = builder.Services.BuildServiceProvider().GetRequiredService<JwtOptions>();
+#pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
+        };
+    });
 
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -71,6 +92,7 @@ var azureSignalRConnectionString = builder.Configuration["SignalR-SchoolChat-Pri
 
 builder.Services.AddSignalR().AddAzureSignalR(azureSignalRConnectionString);
 builder.Services.AddHttpClient();
+builder.Services.AddMemoryCache();
 
 //Presentation Layer Dependencies
 builder.Services.AddSingleton<IChatsHub, ChatsHub>();

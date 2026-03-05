@@ -4,8 +4,9 @@ namespace Application.Services.Interfaces
 {
     public interface IUsersService
     {
+        Task<UserResponseDTO> GetUserByIdAsync(Guid id);
         Task<TokensResponseDTO> RegisterAsync(RegisterDTO dto);
-        Task<UserResponseDTO> SignInAsync(CredentialsDTO credentials);
-        Task<UserResponseDTO> RefreshTokenAsync(string refreshToken);
+        Task<TokensResponseDTO> SignInAsync(CredentialsDTO credentials);
+        Task<TokensResponseDTO> RefreshTokenAsync(string refreshToken);
     }
 }

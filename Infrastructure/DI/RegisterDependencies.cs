@@ -17,10 +17,13 @@ namespace Infrastructure.DI
             services.AddScoped<IChatsCRUDRepository, ChatsCRUDRepository>();
             services.AddScoped<IChatsQueryRepository, ChatsQueryRepository>();
             services.AddScoped<IMessagesRepository, MessagesRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
+
 
             services.AddSingleton<JwtOptions>();
             services.AddSingleton<ITokenCacheService, TokenCacheService>();
             services.AddSingleton<ITokenService, TokenService>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
         }
     }
 }

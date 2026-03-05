@@ -5,6 +5,7 @@ namespace Application.ModelsDTO
 {
     public class UserResponseDTO
     {
+        public Guid Id { get; set; }
         /// <summary>
         /// An <b>@UniqueUserSpecifiedTag</b>
         /// <u><br/> don't add '@' on the beginning</u>

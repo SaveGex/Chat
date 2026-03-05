@@ -1,6 +1,7 @@
 ﻿using Application.Models;
 using Application.ModelsDTO;
 using Application.Orchestrations.Interfaces;
+using Application.Services.Interfaces;
 using ChatApi.Hubs.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
@@ -10,12 +11,12 @@ namespace ChatApi.Hubs;
 public class ChatsHub : Hub, IChatsHub
 {
 
-    private IChatsAccessOrchestrator ChatsAccessOrchestrator { get; init; }
+    private IGenericOrchestrator<IChatsAccessService> GenericOrchestrator{ get; init; }
 
 
-    public ChatsHub(IChatsAccessOrchestrator chatsAccessOrchestrator)
+    public ChatsHub(IGenericOrchestrator<IChatsAccessService> genericOrchestrator)
     {
-        ChatsAccessOrchestrator = chatsAccessOrchestrator;
+        GenericOrchestrator = genericOrchestrator;
     }
 
     public override async Task OnConnectedAsync()
@@ -32,7 +33,7 @@ public class ChatsHub : Hub, IChatsHub
         
 
         HashSet<GroupIdentifier> groupsContainsTheUserIdentifiers =
-            [.. (await ChatsAccessOrchestrator.ExecuteAsync(
+            [.. (await GenericOrchestrator.ExecuteAsync(
                     service => service.ChatsContainsTheUserAsync(userId))
                 ).Select(g => new GroupIdentifier(g.Title, g.Id))
             ];
@@ -51,7 +52,7 @@ public class ChatsHub : Hub, IChatsHub
             new Exception("User id is null or incorrect");
         }
         HashSet<GroupIdentifier> groupsContainsTheUserIdentifiers =
-            [.. (await ChatsAccessOrchestrator.ExecuteAsync(
+            [.. (await GenericOrchestrator.ExecuteAsync(
                     service => service.ChatsContainsTheUserAsync(userId))
                 ).Select(g => new GroupIdentifier(g.Title, g.Id))
             ];
@@ -72,7 +73,7 @@ public class ChatsHub : Hub, IChatsHub
     /// <returns></returns>
     public async Task UpdateMessageAsync(MessageResponseDTO message)
     {
-        GroupIdentifier groupIdentifier = await ChatsAccessOrchestrator.ExecuteAsync(
+        GroupIdentifier groupIdentifier = await GenericOrchestrator.ExecuteAsync(
             service => service.GetGroupIdentifierByGroupIdAsync(message.ChatId)
         );
         await Clients.Group(groupIdentifier.ToString()).SendAsync("updateMessage", message);
@@ -86,7 +87,7 @@ public class ChatsHub : Hub, IChatsHub
     /// <returns></returns>
     public async Task SendMessageAsync(MessageResponseDTO message)
     {
-        GroupIdentifier groupIdentifier = await ChatsAccessOrchestrator.ExecuteAsync(
+        GroupIdentifier groupIdentifier = await GenericOrchestrator.ExecuteAsync(
             service => service.GetGroupIdentifierByGroupIdAsync(message.ChatId)
         );
         await Clients.Group(groupIdentifier.ToString()).SendAsync("receiveMessage", message);
@@ -100,7 +101,7 @@ public class ChatsHub : Hub, IChatsHub
     /// <returns></returns>
     public async Task DeleteMessageAsync(MessageResponseDTO message)
     {
-        GroupIdentifier groupIdentifier = await ChatsAccessOrchestrator.ExecuteAsync(
+        GroupIdentifier groupIdentifier = await GenericOrchestrator.ExecuteAsync(
             service => service.GetGroupIdentifierByGroupIdAsync(message.ChatId)
         );
         await Clients.Group(groupIdentifier.ToString()).SendAsync("deleteMessage", message);

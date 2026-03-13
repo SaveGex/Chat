@@ -1,14 +1,4 @@
-﻿
-
-using Domain.Models;
-using FluentAssertions;
-using Infrastructure.DB;
-using Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using MR.AspNetCore.Pagination;
-
-namespace Infrastructure_Tests.Repositories
+﻿namespace Infrastructure_Tests.Repositories
 {
     public class ChatsRepositoryTests
     {

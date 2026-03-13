@@ -1,16 +1,11 @@
 ﻿using Application.Options;
 using Domain.Interfaces;
 using Domain.Models;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
@@ -21,8 +16,8 @@ namespace Infrastructure.Services
         public int AccessTokenExpirationInSeconds => this.JwtOptions.AccessTokenExpirationInSeconds;
         public int RefreshTokenExpirationInSeconds => this.JwtOptions.RefreshTokenExpirationInSeconds;
 
-        public TokenService(JwtOptions jwtOptions) 
-        { 
+        public TokenService(JwtOptions jwtOptions)
+        {
             JwtOptions = jwtOptions;
         }
         public Task<string> GenerateAccessTokenAsync(User user)

@@ -3,7 +3,6 @@ using Application.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace ChatApi.Controllers
 {
@@ -23,7 +22,7 @@ namespace ChatApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<UserResponseDTO>> GetMe()
         {
-            if(Guid.TryParse(User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value, out Guid userId) == false)
+            if (Guid.TryParse(User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value, out Guid userId) == false)
             {
                 return Unauthorized("Invalid user identifier.");
             }

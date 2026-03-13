@@ -1,6 +1,4 @@
-﻿using Domain.Models;
-using Infrastructure_Tests;
-using System.Data;
+﻿using Infrastructure_Tests;
 
 namespace Infrastructure.DB
 {

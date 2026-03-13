@@ -17,7 +17,7 @@ namespace Application.Services
         private readonly ITokenCacheService _tokenCacheService;
         private readonly IPasswordHasher _passwordHasher;
 
-        private List<Role> BasicUserRoles { get; } = [ 
+        private List<Role> BasicUserRoles { get; } = [
             new Role() { Name = "Guest" },
         ];
 
@@ -47,7 +47,7 @@ namespace Application.Services
             User createdUser = await _genericOrchestrator.ExecuteAsync(
                 async usersRepository => await usersRepository.CreateUserAsync(newUser)
             );
-            
+
             TokenDTO accessToken = new TokenDTO()
             {
                 Token = await _tokenService.GenerateAccessTokenAsync(newUser),
@@ -58,7 +58,7 @@ namespace Application.Services
                 Token = await _tokenService.GenerateRefreshTokenAsync(),
                 TokenExpiresInSeconds = _tokenService.RefreshTokenExpirationInSeconds,
             };
-            
+
             await _tokenCacheService.SaveRefreshTokenAsync(createdUser.Id, refreshToken.Token);
             return new TokensResponseDTO()
             {
@@ -74,7 +74,7 @@ namespace Application.Services
                     ?? throw new Exception($"""User such as this login: "{credentials.Login}" - does not found""")
             );
 
-            if(_passwordHasher.Verify(credentials.Password, user.PasswordHash) == false)
+            if (_passwordHasher.Verify(credentials.Password, user.PasswordHash) == false)
             {
                 throw new Exception("Wrong password");
             }

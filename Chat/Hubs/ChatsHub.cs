@@ -11,7 +11,7 @@ namespace ChatApi.Hubs;
 public class ChatsHub : Hub, IChatsHub
 {
 
-    private IGenericOrchestrator<IChatsAccessService> GenericOrchestrator{ get; init; }
+    private IGenericOrchestrator<IChatsAccessService> GenericOrchestrator { get; init; }
 
 
     public ChatsHub(IGenericOrchestrator<IChatsAccessService> genericOrchestrator)
@@ -26,11 +26,11 @@ public class ChatsHub : Hub, IChatsHub
             new Exception("Context is null");
         }
 
-        if(Guid.TryParse(Context?.User?.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value, out Guid userId) == false)
+        if (Guid.TryParse(Context?.User?.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value, out Guid userId) == false)
         {
             throw new Exception("User id is null or incorrect");
         }
-        
+
 
         HashSet<GroupIdentifier> groupsContainsTheUserIdentifiers =
             [.. (await GenericOrchestrator.ExecuteAsync(

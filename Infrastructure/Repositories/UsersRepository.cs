@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories
             return user;
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email) 
+        public async Task<User?> GetUserByEmailAsync(string email)
             => await Db.Users.SingleAsync(u => u.Email == email);
 
         public async Task<User?> GetUserByIdAsync(Guid userId)

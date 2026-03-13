@@ -1,7 +1,5 @@
 using Application.DI;
 using Application.Options;
-using Application.Services;
-using Application.Services.Interfaces;
 using Azure.Identity;
 using ChatApi.Hubs;
 using ChatApi.Hubs.Interfaces;

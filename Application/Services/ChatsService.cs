@@ -1,52 +1,44 @@
-﻿using Application.Interfaces;
-using Application.Models;
-using Application.ModelsDTO;
+﻿using Application.ModelsDTO;
+using Application.Services.Interfaces;
 using Domain.Interfaces;
+using Domain.Models;
+using Mapster;
 
 namespace Application.Services
 {
     public class ChatsService : IChatsService
     {
-        private IChatsRepository ChatsRepository { get; init; }
+        private IChatsCRUDRepository CRUDRepository { get; init; }
 
-        public ChatsService(IChatsRepository chatsRepository)
+        public ChatsService(IChatsCRUDRepository chatsRepository)
         {
-            ChatsRepository = chatsRepository;
+            CRUDRepository = chatsRepository;
         }
 
-        public Task<IEnumerable<ChatResponseDTO>> ChatsContainsTheUser(string userId)
+        public async Task<ChatResponseDTO> CreateChatAsync(ChatCreateDTO dto)
         {
-            throw new NotImplementedException();
+            var chat = dto.Adapt<Chat>();
+            var result = await CRUDRepository.CreateChatAsync(chat);
+            return result.Adapt<ChatResponseDTO>();
         }
 
-        public Task<GroupIdentifier> GetGroupIdentifierByGroupIdAsync(int chatId)
+
+        public async Task<ChatResponseDTO> GetChatAsync(Guid chatId)
         {
-            throw new NotImplementedException();
+            var chat = await CRUDRepository.GetChatByIdAsync(chatId);
+            return chat.Adapt<ChatResponseDTO>();
+        }
+        public async Task<ChatResponseDTO> UpdateChatAsync(Guid chatId, ChatUpdateDTO dto)
+        {
+            var chat = dto.Adapt<Chat>();
+            var result = await CRUDRepository.UpdateChatAsync(chatId, chat);
+            return result.Adapt<ChatResponseDTO>();
         }
 
-        public Task<ChatResponseDTO> CreateChatAsync(ChatCreateDTO dto)
+        public async Task<ChatResponseDTO> DeleteChatAsync(Guid chatId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<ChatResponseDTO>> GetAvailableChatsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ChatResponseDTO> GetChatAsync(int chatId, int includeMessages = 100)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ChatResponseDTO> DeleteChatAsync(int chatId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<ChatResponseDTO>> ChatsContainsTheUser(int userId)
-        {
-            throw new NotImplementedException();
+            var chat = await CRUDRepository.DeleteChatAsync(chatId);
+            return chat.Adapt<ChatResponseDTO>();
         }
     }
 }

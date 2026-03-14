@@ -1,12 +1,10 @@
-﻿using Domain.Models;
-
-namespace Application.ModelsDTO;
+﻿namespace Application.ModelsDTO;
 
 public class MessageResponseDTO
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
-    public int ChatId { get; set; }
+    public Guid ChatId { get; set; }
 
     public string Author { get; set; } = null!;
 
@@ -14,5 +12,5 @@ public class MessageResponseDTO
 
     public DateTime CreatedAt { get; set; }
 
-    
+
 }

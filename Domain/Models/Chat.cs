@@ -1,15 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using Domain.Models.Contracts;
 
 namespace Domain.Models;
 
-public partial class Chat
+public class Chat : IIdentifiable
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     public string Title { get; set; } = null!;
 
-    public virtual ICollection<Client> Clients { get; set; } = new List<Client>();
-
+    /// <summary>
+    /// Permissions what users can do
+    /// </summary>
+    public virtual ICollection<ChatUserPermission> UsersPermissions { get; set; } = new List<ChatUserPermission>();
+    /// <summary>
+    /// Users of this chat\group
+    /// </summary>
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    /// <summary>
+    /// Messages of this chat\group
+    /// </summary>
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
+    /// <summary>
+    /// Deleted messages of this chat\group
+    /// </summary>
+    public virtual ICollection<Message> DeletedMessages { get; set; } = new List<Message>();
 }

@@ -1,23 +1,37 @@
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
+{
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:5246",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.Azure.SignalR",
+        "SignalR:SchoolChat:PrimaryConnectionString": "https://chatapivault.vault.azure.net/",
+        "SignalR:SchoolChat:PrimaryConnectionStringUri": "https://chatapivault.vault.azure.net/",
+        "SchoolChatSecretsUri": "https://chatapivault.vault.azure.net/"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5246"
     },
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7148;http://localhost:5246",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.Azure.SignalR",
+        "SchoolChatSecretsUri": "https://chatapivault.vault.azure.net/"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7148;http://localhost:5246"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_HTTPS_PORTS": "7148",
+        "ASPNETCORE_HTTP_PORTS": "5246",
+        "SchoolChatSecretsUri": "https://chatapivault.vault.azure.net/"
+      },
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }

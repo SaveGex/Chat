@@ -2,7 +2,7 @@
 {
     public class MessageDeleteDTO
     {
-        public int MessageId { get; set; }
-        public int ChatId { get; set; }
+        public Guid MessageId { get; set; }
+        public Guid ChatId { get; set; }
     }
 }

@@ -1,10 +1,8 @@
-﻿using Domain.Models;
-
-namespace Application.ModelsDTO
+﻿namespace Application.ModelsDTO
 {
     public class MessageCreateDTO
     {
-        public int ChatId { get; set; }
+        public Guid ChatId { get; set; }
 
         public string Author { get; set; } = null!;
 

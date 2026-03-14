@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "type": "identityapp"
+    },
+    "signalr1": {
+      "type": "signalr",
+      "connectionId": "Azure:SignalR:ConnectionString",
+      "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "SchoolChatSecretsUri"
+    }
+  }
+}

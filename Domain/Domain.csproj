@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Models\Client.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MR.AspNetCore.Pagination" Version="3.1.0" />
   </ItemGroup>
 

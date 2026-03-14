@@ -31,8 +31,11 @@ public partial class SchoolChatContext : DbContext
     {
         IConfiguration configuration = new ConfigurationBuilder()
             .AddUserSecrets<SchoolChatContext>()
+            .AddEnvironmentVariables()
             .Build();
-        return configuration[connectionStringConfigurationKey] ?? throw new Exception("Connection string does not configured");
+        return configuration.GetConnectionString("DefaultConnection") 
+            ?? configuration[connectionStringConfigurationKey] 
+            ?? throw new Exception("Connection string does not configured");
     }
 
 
@@ -53,7 +56,7 @@ public partial class SchoolChatContext : DbContext
             entity.Property(u => u.Id).ValueGeneratedOnAdd().HasDefaultValueSql("newsequentialid()");
 
             entity.HasIndex(u => u.Identifier).IsUnique();
-            entity.Property(u => u.Identifier).IsRequired().HasDefaultValueSql("(newId())");
+            entity.Property(u => u.Identifier).IsRequired();
 
             entity.Property(u => u.Username).IsRequired().HasMaxLength(256);
 

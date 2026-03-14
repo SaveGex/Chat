@@ -1,6 +1,7 @@
 using Application.DI;
 using Application.Options;
 using Azure.Identity;
+using ChatApi.Extentions;
 using ChatApi.Hubs;
 using ChatApi.Hubs.Interfaces;
 using Infrastructure.DI;
@@ -102,6 +103,8 @@ builder.Services.AddApplicationServices();
 builder.Services.AddDBDependencies();
 
 var app = builder.Build();
+
+app.ExecuteMigrations();
 
 if (app.Environment.IsDevelopment())
 {

@@ -39,7 +39,7 @@ namespace Application.Services
             {
                 Username = dto.Username,
                 Email = dto.Email,
-                Identifier = dto.Identifier ?? new Guid(Encoding.UTF8.GetBytes(dto.Username)).ToString(),
+                Identifier = dto.Identifier ?? Guid.NewGuid().ToString(),
                 PasswordHash = _passwordHasher.HashPassword(dto.Password),
                 Roles = BasicUserRoles,
                 IconUrl = null,
@@ -76,7 +76,7 @@ namespace Application.Services
 
             if (_passwordHasher.Verify(credentials.Password, user.PasswordHash) == false)
             {
-                throw new Exception("Wrong password");
+                throw new UnauthorizedAccessException("Wrong password");
             }
             TokenDTO accessToken = new TokenDTO()
             {
